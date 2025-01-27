@@ -178,11 +178,8 @@ pub fn RenderBar<X: Tick, Y: Tick>(
 
     let rects = move || {
         positions.with(|positions| {
-            // Find the bottom Y position of each bar
-            let bottom_y = match bar.placement.get() {
-                BarPlacement::Zero => state.svg_zero.get().1,
-                BarPlacement::Edge => state.layout.inner.get().bottom_y(),
-            };
+            // Find the zero Y position of each bar
+            let zero_y = state.svg_zero.get().1;
 
             // Find width of each X position
             // Note: this should possibly be on Layout
@@ -198,12 +195,19 @@ pub fn RenderBar<X: Tick, Y: Tick>(
             positions
                 .iter()
                 .map(|&(x, y)| {
+                    let (rect_y, height) = if y < zero_y {
+                        (y, (zero_y - y).abs()) // Bar extends upwards
+                    } else {
+                        (zero_y, (y - zero_y).abs()) // Bar extends downwards
+                    };
+                    let fill_color = if y < zero_y { bar.colour.get().to_string() } else { "#EF4444".to_string() };
                     view! {
                         <rect
                             x=x + group_width * bar.group_id as f64 + offset
-                            y=y
+                            y=rect_y
                             width=group_width_inner
-                            height=bottom_y - y />
+                            height=height
+                            fill=fill_color />
                     }
                 })
                 .collect::<Vec<_>>()
