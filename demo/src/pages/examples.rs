@@ -151,6 +151,7 @@ impl Example {
     fn card_view(self) -> impl IntoView {
         let de = use_app_context().debug.into();
         let da = load_data();
+        let da_neg = load_data_negative();
         match self {
             Self::Line => Either::Left(EitherOf10::A(view! {
                 <series_line::Example debug=de data=da />
@@ -159,7 +160,7 @@ impl Example {
                 <series_line_stack::Example debug=de data=da />
             })),
             Self::Bar => Either::Left(EitherOf10::C(view! {
-                <series_bar::Example debug=de data=da />
+                <series_bar::Example debug=de data=da_neg />
             })),
             Self::Legend => Either::Left(EitherOf10::D(view! {
                 <edge_legend::Example debug=de data=da />

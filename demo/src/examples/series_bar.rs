@@ -1,12 +1,12 @@
-use super::MyData;
+use super::MyDataNegative;
 use leptos::prelude::*;
 use leptos_chartistry::*;
 
 #[component]
-pub fn Example(debug: Signal<bool>, data: Signal<Vec<MyData>>) -> impl IntoView {
-    let series = Series::new(|data: &MyData| data.x)
-        .bar(|data: &MyData| data.y1)
-        .bar(|data: &MyData| data.y2);
+pub fn Example(debug: Signal<bool>, data: Signal<Vec<MyDataNegative>>) -> impl IntoView {
+    let series = Series::new(|data: &MyDataNegative| data.x)
+        .bar(|data: &MyDataNegative| data.y);
+
     view! {
         <Chart
             aspect_ratio=AspectRatio::from_outer_height(300.0, 1.2)

@@ -34,6 +34,43 @@ impl MyData {
     }
 }
 
+#[derive(Debug, Clone, Copy)]
+pub struct MyDataNegative {
+    x: f64,
+    y: f64,
+}
+
+impl MyDataNegative {
+    fn new(x: f64, y: f64) -> Self {
+        Self { x, y }
+    }
+}
+
+pub fn load_data_negative () -> Signal<Vec<MyDataNegative>> {
+    let vec = vec![
+        MyDataNegative::new(0.0, 1.0),
+        MyDataNegative::new(1.0, -3.0),
+        MyDataNegative::new(2.0, 5.0),
+        MyDataNegative::new(3.0, -5.5),
+        MyDataNegative::new(4.0, 5.0),
+        MyDataNegative::new(5.0, -2.5),
+        MyDataNegative::new(6.0, 2.25),
+        MyDataNegative::new(7.0, -3.0),
+        MyDataNegative::new(8.0, 7.0),
+        MyDataNegative::new(9.0, -8.5),
+        MyDataNegative::new(10.0, 10.0),
+    ];
+
+    let vec_clone = vec.clone();
+    let signal = Signal::derive(move || {
+        vec.clone()
+    });
+
+    leptos::logging::log!("Data: {:?}", vec_clone);
+
+    signal
+}
+
 pub fn load_data() -> Signal<Vec<MyData>> {
     Signal::derive(|| {
         vec![
